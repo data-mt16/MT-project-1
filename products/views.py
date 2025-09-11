@@ -13,3 +13,11 @@ def product_list_view(request):
 
     # 3. Render the HTML page and send the data to it
     return render(request, 'products/product_list.html', context)
+
+from rest_framework import viewsets
+from .models import Product
+from .serializers import ProductSerializer
+
+class ProductViewSet(viewsets.ModelViewSet):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer

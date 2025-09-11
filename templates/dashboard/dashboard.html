@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h2>Business Intelligence Reports</h2>
+    <p>Select a question from the dropdown below to see the results.</p>
+    
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <label for="report-select" class="form-label">Select a Report to View</label>
+            <select id="report-select" class="form-select form-select-lg">
+                <option selected value="">-- Choose a question --</option>
+                <option value="customer-distribution">Q1: Customer Distribution by State</option>
+                <option value="top-vehicle-makers">Q2: Top 5 Vehicle Makers</option>
+                <option value="preferred-maker-by-state">Q3: Most Preferred Maker by State</option>
+                <option value="average-ratings">Q4: Average Customer Ratings</option>
+                <option value="feedback-distribution">Q5: Feedback Distribution (Complex)</option>
+                <option value="orders-trend-by-quarter">Q6: Order Trend by Quarter</option>
+                <option value="revenue-qoq-change">Q7: Revenue Quarter-over-Quarter Change %</option>
+                <option value="revenue-orders-trend">Q8: Revenue and Order Trend</option>
+                <option value="avg-discount-by-card">Q9: Average Discount by Card Type</option>
+                <option value="avg-ship-time">Q10: Average Shipping Time by Quarter</option>
+            </select>
+        </div>
+    </div>
+
+    <hr>
+
+    <h3 id="results-title">Results</h3>
+    <div id="results-container">
+        </div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    const reportSelect = document.getElementById('report-select');
+    const resultsContainer = document.getElementById('results-container');
+    const resultsTitle = document.getElementById('results-title');
+
+    function displayResults(data) {
+        if (!data || (Array.isArray(data) && data.length === 0)) {
+            resultsContainer.innerHTML = '<div class="alert alert-warning">No results found or data is empty.</div>';
+            return;
+        }
+        // Special handling for Q4 which returns a mix of data
+        if (reportSelect.value === 'average-ratings') {
+            let html = `<p class="lead">Overall Average Rating: <strong>${data.overall_average_rating.toFixed(2)}</strong></p><h6>Breakdown by Quarter:</h6>`;
+            resultsContainer.innerHTML = html + createTable(data.average_rating_by_quarter);
+            return;
+        }
+        resultsContainer.innerHTML = createTable(data);
+    }
+
+    function createTable(dataArray) {
+        if (typeof dataArray !== 'object' || !Array.isArray(dataArray)) {
+             return `<div class="alert alert-info">${dataArray.message || 'Data received is not in a table format.'}</div>`;
+        }
+        const headers = Object.keys(dataArray[0]);
+        let table = '<table class="table table-striped table-hover">';
+        table += '<thead class="table-dark"><tr>';
+        headers.forEach(header => {
+            table += `<th>${header.replace(/_/g, ' ').toUpperCase()}</th>`;
+        });
+        table += '</tr></thead>';
+        table += '<tbody>';
+        dataArray.forEach(row => {
+            table += '<tr>';
+            headers.forEach(header => {
+                let value = row[header];
+                if (value === null) {
+                    value = 'N/A';
+                } else if (typeof value === 'number' && !Number.isInteger(value)) {
+                    value = value.toFixed(2);
+                }
+                table += `<td>${value}</td>`;
+            });
+            table += '</tr>';
+        });
+        table += '</tbody></table>';
+        return table;
+    }
+
+    reportSelect.addEventListener('change', async (event) => {
+        const reportSlug = event.target.value;
+        const selectedOptionText = event.target.options[event.target.selectedIndex].text;
+        if (!reportSlug) {
+            resultsContainer.innerHTML = '';
+            resultsTitle.innerText = 'Results';
+            return;
+        }
+        resultsTitle.innerText = `Results for: ${selectedOptionText}`;
+        resultsContainer.innerHTML = '<div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div>';
+        try {
+            const response = await fetch(`/api/reports/${reportSlug}/`);
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            displayResults(data);
+        } catch (error) {
+            resultsContainer.innerHTML = '<div class="alert alert-danger">Error loading data. Please check the server console.</div>';
+            console.error('Error:', error);
+        }
+    });
+</script>
+{% endblock %}
