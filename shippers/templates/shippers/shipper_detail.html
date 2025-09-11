@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ shipper.shipper_name }}</title>
+    <style>body { font-family: sans-serif; padding: 20px; }</style>
+</head>
+<body>
+    <h1>{{ shipper.shipper_name }}</h1>
+    <p><strong>Shipper ID:</strong> {{ shipper.shipper_id }}</p>
+    <p><strong>Contact Details:</strong> {{ shipper.shipper_contact_details }}</p>
+    <br>
+    <a href="{% url 'shipper-list' %}">Back to Shipper List</a>
+</body>
+</html>

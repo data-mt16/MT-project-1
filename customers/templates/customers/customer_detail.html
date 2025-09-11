@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ customer.customer_name }}</title>
+</head>
+<body>
+    <h1>{{ customer.customer_name }}</h1>
+    <p><strong>Job Title:</strong> {{ customer.job_title }}</p>
+    <p><strong>City:</strong> {{ customer.city }}, {{ customer.state }}</p>
+    <p><strong>Email:</strong> {{ customer.email_address }}</p>
+    <p><strong>Phone:</strong> {{ customer.phone_number }}</p>
+    <br>
+   <a href="{% url 'customer-list' %}">Back to Customer List</a>
+</body>
+</html>

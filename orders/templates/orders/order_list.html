@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Orders</title>
+    <style>body { font-family: sans-serif; padding: 20px; }</style>
+</head>
+<body>
+    <h1>Recent Orders</h1>
+    <ul>
+        {% for order in orders %}
+            <li>
+                <a href="{% url 'order-detail' order.pk %}">
+                    Order ID: {{ order.order_id }} (Customer: {{ order.customer.customer_name }})
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
