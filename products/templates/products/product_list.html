@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Our Vehicles</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        li { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>All Vehicles in Stock</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <strong>{{ product.vehicle_maker }} {{ product.vehicle_model }}</strong> ({{ product.vehicle_model_year }})
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

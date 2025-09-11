@@ -1,0 +1,7 @@
+"python.linting.flake8Enabled": true: flake8 linter ko on karti hai.
+
+"python.formatting.provider": "black": black ko default formatter banati hai.
+
+"editor.formatOnSave": true: Jab bhi tum file save (Ctrl+S) karoge, code automatically black ke style mein format ho jayega. Super useful!
+
+"files.exclude": Side bar se faltu ke folders (like __pycache__) ko hide kar deti hai.
