@@ -27,7 +27,9 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 # Application definition
 
@@ -91,16 +93,12 @@ WSGI_APPLICATION = "main_project.wsgi.application"
 
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cardeal_db',         # The database name you just created
-        'USER': 'postgres',                 # Your PostgreSQL username (default is postgres)
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'), # The password you set during installation!
-        'HOST': 'localhost',                # Or '127.0.0.1'
-        'PORT': '5432',                     # Default PostgreSQL port
-    }
+    'default': dj_database_url.config(
+        # Feel free to alter this value to suit your needs.
+        default='postgresql://postgres:your_local_password@localhost:5432/car_dealership_db',
+        conn_max_age=600
+    )
 }
-
 
 
 # Password validation
