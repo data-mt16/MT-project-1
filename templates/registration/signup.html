@@ -5,73 +5,92 @@
 <form method="post">
   {% csrf_token %}
   
-  {% if form.non_field_errors %}
+  {% if form.errors %}
     <div class="alert alert-danger">
-        {% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}
+        <p><strong>Please correct the errors below:</strong></p>
+        {{ form.errors }}
     </div>
   {% endif %}
 
   <div class="mb-3">
       <label for="{{ form.username.id_for_label }}" class="form-label">Username</label>
       {{ form.username }}
-      {% if form.username.errors %}<div class="text-danger mt-1">{{ form.username.errors }}</div>{% endif %}
   </div>
 
   <div class="mb-3">
       <label for="{{ form.password1.id_for_label }}" class="form-label">Password</label>
       {{ form.password1 }}
-      
-      <div id="password-feedback" class="form-text"></div>
-      
-      {% if form.password1.errors %}<div class="text-danger mt-1">{{ form.password1.errors }}</div>{% endif %}
+      <div id="password-feedback" class="form-text">Enter a password that meets the requirements below.</div>
   </div>
 
   <div class="mb-3">
       <label for="{{ form.password2.id_for_label }}" class="form-label">Password confirmation</label>
       {{ form.password2 }}
-      {% if form.password2.errors %}<div class="text-danger mt-1">{{ form.password2.errors }}</div>{% endif %}
+      <div id="confirmation-feedback" class="form-text"></div>
   </div>
   
   <button type="submit" class="btn btn-primary">Sign Up</button>
 </form>
 {% endblock %}
 
-
 {% block scripts %}
 <script>
-    // Get the elements we need to work with
+    // --- Get all the elements we need ---
     const passwordInput = document.getElementById('id_password1');
+    const passwordConfirmInput = document.getElementById('id_password2');
     const passwordFeedback = document.getElementById('password-feedback');
+    const confirmationFeedback = document.getElementById('confirmation-feedback');
 
-    // Add an event listener that fires every time the user types in the password field
-    passwordInput.addEventListener('input', function() {
-        const password = this.value;
+    // --- Function to check password strength ---
+    function validatePasswordStrength() {
+        const password = passwordInput.value;
         let errors = [];
 
-        // --- Our Validation Rules ---
-        // Rule 1: Check for minimum length
         if (password.length < 8) {
             errors.push("Must be at least 8 characters long.");
         }
-        // Rule 2: Check for a number
         if (!/\d/.test(password)) {
             errors.push("Must contain at least one number.");
         }
-        // Rule 3: Check for an uppercase letter
         if (!/[A-Z]/.test(password)) {
             errors.push("Must contain at least one uppercase letter.");
         }
 
-        // --- Displaying the Feedback ---
         if (errors.length > 0) {
-            // If there are errors, show them in red
-            passwordFeedback.innerHTML = errors.map(error => `<li>${error}</li>`).join('');
+            passwordFeedback.innerHTML = '<ul>' + errors.map(error => `<li>${error}</li>`).join('') + '</ul>';
             passwordFeedback.className = 'text-danger mt-2';
         } else {
-            // If there are no errors, show a success message in green
-            passwordFeedback.innerHTML = '<li>Password is strong!</li>';
+            passwordFeedback.innerHTML = '<ul class="mb-0"><li>Password is strong!</li></ul>';
             passwordFeedback.className = 'text-success mt-2';
         }
+    }
+
+    // --- Function to check if passwords match ---
+    function validatePasswordConfirmation() {
+        const password = passwordInput.value;
+        const confirmPassword = passwordConfirmInput.value;
+
+        if (confirmPassword.length === 0) {
+            confirmationFeedback.innerHTML = '';
+            return;
+        }
+
+        if (password === confirmPassword) {
+            confirmationFeedback.innerHTML = 'Passwords match!';
+            confirmationFeedback.className = 'text-success mt-2';
+        } else {
+            confirmationFeedback.innerHTML = 'Passwords do not match!';
+            confirmationFeedback.className = 'text-danger mt-2';
+        }
+    }
+
+    // --- Add Event Listeners ---
+    passwordInput.addEventListener('input', function() {
+        validatePasswordStrength();
+        validatePasswordConfirmation(); // Also check confirmation when the first password changes
     });
+    
+    passwordConfirmInput.addEventListener('input', validatePasswordConfirmation);
+
 </script>
 {% endblock %}
