@@ -36,6 +36,42 @@
 </form>
 {% endblock %}
 
-{% block scripts %}
 
+{% block scripts %}
+<script>
+    // Get the elements we need to work with
+    const passwordInput = document.getElementById('id_password1');
+    const passwordFeedback = document.getElementById('password-feedback');
+
+    // Add an event listener that fires every time the user types in the password field
+    passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        let errors = [];
+
+        // --- Our Validation Rules ---
+        // Rule 1: Check for minimum length
+        if (password.length < 8) {
+            errors.push("Must be at least 8 characters long.");
+        }
+        // Rule 2: Check for a number
+        if (!/\d/.test(password)) {
+            errors.push("Must contain at least one number.");
+        }
+        // Rule 3: Check for an uppercase letter
+        if (!/[A-Z]/.test(password)) {
+            errors.push("Must contain at least one uppercase letter.");
+        }
+
+        // --- Displaying the Feedback ---
+        if (errors.length > 0) {
+            // If there are errors, show them in red
+            passwordFeedback.innerHTML = errors.map(error => `<li>${error}</li>`).join('');
+            passwordFeedback.className = 'text-danger mt-2';
+        } else {
+            // If there are no errors, show a success message in green
+            passwordFeedback.innerHTML = '<li>Password is strong!</li>';
+            passwordFeedback.className = 'text-success mt-2';
+        }
+    });
+</script>
 {% endblock %}
