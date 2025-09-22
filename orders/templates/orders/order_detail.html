@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Order {{ order.order_id }}</title>
+    <style>body { font-family: sans-serif; padding: 20px; }</style>
+</head>
+<body>
+    <h1>Details for Order: {{ order.order_id }}</h1>
+    <p><strong>Customer:</strong> {{ order.customer.customer_name }}</p>
+    <p><strong>Product:</strong> {{ order.product.vehicle_maker }} {{ order.product.vehicle_model }}</p>
+    <p><strong>Order Date:</strong> {{ order.order_date }}</p>
+    <p><strong>Shipper:</strong> {{ order.shipper.shipper_name }}</p>
+    <p><strong>Price:</strong> {{ order.vehicle_price }}</p>
+    <p><strong>Feedback:</strong> {{ order.customer_feedback }}</p>
+    <br>
+    <a href="{% url 'order-list' %}">Back to Order List</a>
+</body>
+</html>

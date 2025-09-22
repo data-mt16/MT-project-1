@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All Shippers</title>
+    <style>body { font-family: sans-serif; padding: 20px; }</style>
+</head>
+<body>
+    <h1>Our Shipping Partners</h1>
+    <ul>
+        {% for shipper in shippers %}
+            <li>
+                <a href="{% url 'shipper-detail' shipper.pk %}">
+                    {{ shipper.shipper_name }}
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
