@@ -5,7 +5,7 @@
     <h1 class="display-4">Welcome to the Car Dealership App</h1>
     <p class="lead">Your one-stop solution for managing vehicle sales and data.</p>
     <hr class="my-4">
-
+    
     {% if user.is_authenticated %}
       <p>You are logged in. You can now access the reports and data.</p>
       <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
@@ -15,4 +15,48 @@
       <a href="{% url 'signup' %}" class="btn btn-info btn-lg">Sign Up</a>
     {% endif %}
   </div>
+
+  <div class="ticker-wrap mt-5">
+    <div id="data-ticker" class="ticker">
+        </div>
+  </div>
+{% endblock %}
+
+
+{% block scripts %}
+<script>
+    // --- JavaScript for the Data Ticker ---
+    const ticker = document.getElementById('data-ticker');
+
+    // This function will be called when the page loads
+    async function populateTicker() {
+        try {
+            // Call our new API endpoint
+            const response = await fetch('/api/reports/data-snapshot/');
+            const data = await response.json();
+
+            let tickerItems = '';
+
+            // Create HTML for each data point
+            data.customers.forEach(c => {
+                tickerItems += `<div class="ticker__item">New Customer: ${c.name} from ${c.city}</div>`;
+            });
+            data.products.forEach(p => {
+                tickerItems += `<div class="ticker__item">Popular Model: ${p.name}</div>`;
+            });
+            data.orders.forEach(o => {
+                tickerItems += `<div class="ticker__item">Recent Order: #${o.id} for ₹${o.price}</div>`;
+            });
+
+            // Put the HTML into our ticker container
+            ticker.innerHTML = tickerItems;
+
+        } catch (error) {
+            console.error("Could not load ticker data:", error);
+        }
+    }
+
+    // Run the function when the page is loaded
+    document.addEventListener('DOMContentLoaded', populateTicker);
+</script>
 {% endblock %}

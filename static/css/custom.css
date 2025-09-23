@@ -56,3 +56,33 @@ body {
 .dropdown-menu {
     transition: all 0.3s ease;
 }
+/* --- Data Ticker Styling --- */
+@keyframes ticker-scroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+.ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    background-color: #f8f9fa;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    padding: 1rem 0;
+}
+
+.ticker {
+    display: inline-block;
+    white-space: nowrap;
+    animation: ticker-scroll 40s linear infinite;
+}
+
+.ticker__item {
+    display: inline-block;
+    padding: 0 2rem;
+    font-size: 1.2rem;
+    color: #555;
+}
+.ticker:hover {
+    animation-play-state: paused; /* Pause animation on hover */
+}

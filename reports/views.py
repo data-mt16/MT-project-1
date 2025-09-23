@@ -185,3 +185,28 @@ def avg_ship_time(request):
     for item in data:
         item['average_shipping_time_in_days'] = item['average_shipping_time_in_days'].days
     return Response(data)
+
+# reports/views.py
+# ... (keep all your other report views) ...
+import random
+
+@api_view(['GET'])
+def data_snapshot_api(request):
+    # Get 3 random customers who have placed orders
+    customers = list(Customer.objects.filter(order__isnull=False).distinct())
+    customer_sample = random.sample(customers, min(len(customers), 3))
+
+    # Get 3 random products that are in orders
+    products = list(Product.objects.filter(order__isnull=False).distinct())
+    product_sample = random.sample(products, min(len(products), 3))
+
+    # Get 3 random orders
+    orders = list(Order.objects.all())
+    order_sample = random.sample(orders, min(len(orders), 3))
+
+    data = {
+        'customers': [{'name': c.customer_name, 'city': c.city} for c in customer_sample],
+        'products': [{'name': f"{p.vehicle_maker} {p.vehicle_model}"} for p in product_sample],
+        'orders': [{'id': o.order_id, 'price': o.vehicle_price} for o in order_sample],
+    }
+    return Response(data)

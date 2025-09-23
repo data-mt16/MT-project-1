@@ -12,4 +12,5 @@ urlpatterns = [
     path('revenue-orders-trend/', views.revenue_orders_trend, name='report-revenue-orders-trend'),
     path('avg-discount-by-card/', views.avg_discount_by_card, name='report-avg-discount-by-card'),
     path('avg-ship-time/', views.avg_ship_time, name='report-avg-ship-time'),
+    path('data-snapshot/', views.data_snapshot_api, name='data-snapshot'),
 ]
