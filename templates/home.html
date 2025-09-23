@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+  <div class="hero-section"> <div class="text-center">
+      <h1 class="display-3 fw-bold">Welcome to the Car Dealership App</h1>
+      <p class="lead text-muted">Your one-stop solution for managing vehicle sales and data.</p>
+      </div>
+  </div>
   <div class="text-center">
     <h1 class="display-4">Welcome to the Car Dealership App</h1>
     <p class="lead">Your one-stop solution for managing vehicle sales and data.</p>
@@ -18,8 +23,11 @@
 
   <div class="ticker-wrap mt-5">
     <div id="data-ticker" class="ticker">
-        </div>
-  </div>
+        <div class="ticker__item placeholder-item">Loading live data...</div>
+        <div class="ticker__item placeholder-item">Connecting to the dealership network...</div>
+        <div class="ticker__item placeholder-item">Fetching latest sales...</div>
+    </div>
+</div>
 {% endblock %}
 
 
@@ -28,35 +36,31 @@
     // --- JavaScript for the Data Ticker ---
     const ticker = document.getElementById('data-ticker');
 
-    // This function will be called when the page loads
     async function populateTicker() {
         try {
-            // Call our new API endpoint
             const response = await fetch('/api/reports/data-snapshot/');
             const data = await response.json();
 
             let tickerItems = '';
 
-            // Create HTML for each data point
             data.customers.forEach(c => {
-                tickerItems += `<div class="ticker__item">New Customer: ${c.name} from ${c.city}</div>`;
+                tickerItems += `<div class="ticker__item">👤 New Customer: ${c.name} from ${c.city}</div>`;
             });
             data.products.forEach(p => {
-                tickerItems += `<div class="ticker__item">Popular Model: ${p.name}</div>`;
+                tickerItems += `<div class="ticker__item">🚗 Popular Model: ${p.name}</div>`;
             });
             data.orders.forEach(o => {
-                tickerItems += `<div class="ticker__item">Recent Order: #${o.id} for ₹${o.price}</div>`;
+                tickerItems += `<div class="ticker__item">🧾 Recent Order: #${o.id} for ₹${o.price}</div>`;
             });
 
-            // Put the HTML into our ticker container
-            ticker.innerHTML = tickerItems;
+            // THE FIX: We duplicate the content to create a seamless, infinite loop!
+            ticker.innerHTML = tickerItems + tickerItems;
 
         } catch (error) {
             console.error("Could not load ticker data:", error);
+            // If API fails, the placeholder content will remain.
         }
     }
-
-    // Run the function when the page is loaded
     document.addEventListener('DOMContentLoaded', populateTicker);
 </script>
 {% endblock %}

@@ -57,9 +57,42 @@ body {
     transition: all 0.3s ease;
 }
 /* --- Data Ticker Styling --- */
+/* static/css/custom.css */
+
+/* --- UPDATED Data Ticker Styling --- */
 @keyframes ticker-scroll {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); } /* Animate to -50% because we duplicated the content */
+}
+
+.ticker-wrap {
+    width: 100%;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 1.5rem 0;
+    border-top: 1px solid #e9ecef;
+}
+
+.ticker {
+    display: inline-block;
+    white-space: nowrap;
+    /* Adjust animation duration for speed. More items = longer duration */
+    animation: ticker-scroll 60s linear infinite; 
+}
+
+.ticker:hover {
+    animation-play-state: paused;
+}
+
+.ticker__item {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    font-size: 1.1rem; /* Slightly smaller font */
+    color: #495057;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 50px; /* Pill shape */
+    margin: 0 0.75rem;
 }
 
 .ticker-wrap {
@@ -85,4 +118,25 @@ body {
 }
 .ticker:hover {
     animation-play-state: paused; /* Pause animation on hover */
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1 0 auto;
+}
+
+
+.hero-section {
+    background-color: #f8f9fa; /* A very light grey for separation */
+    padding: 6rem 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
 }
