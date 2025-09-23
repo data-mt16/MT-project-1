@@ -1,16 +1,43 @@
-/* static/css/custom.css */
-
+/* --- Base Layout & Fonts --- */
+html, body {
+    height: 100%;
+}
 body {
+    display: flex;
+    flex-direction: column;
     font-family: 'Inter', sans-serif;
 }
-
-.navbar.bg-dark {
-    background: linear-gradient(90deg, #333, #444) !important;
-    border-bottom: 3px solid #007aff; /* A poppy blue accent line */
+.container {
+    flex: 1 0 auto;
 }
 
-/* --- New "Interesting" Button Colors --- */
-/* Overriding the default green login button */
+/* --- Homepage Hero Section --- */
+.hero-section {
+    background-color: #f8f9fa;
+    padding: 6rem 2rem;
+    border-radius: 1rem;
+    margin-top: 2rem;
+}
+
+/* --- Navbar Styling --- */
+.navbar.bg-dark {
+    background: linear-gradient(90deg, #333, #444) !important;
+    border-bottom: 3px solid #007aff;
+    padding: 0.8rem 1rem;
+}
+
+/* --- Button Styling --- */
+.btn-primary, .btn-info {
+    background-color: #007aff;
+    border-color: #007aff;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+.btn-primary:hover, .btn-info:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: scale(1.05);
+}
 .btn-success {
     background-color: #34c759;
     border-color: #34c759;
@@ -20,49 +47,13 @@ body {
 .btn-success:hover {
     background-color: #2ca549;
     border-color: #2ca549;
-    transform: scale(1.05); /* Make it pop on hover */
-}
-
-/* Overriding the default blue signup button */
-.btn-info {
-    background-color: #007aff;
-    border-color: #007aff;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out;
-}
-.btn-info:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
     transform: scale(1.05);
 }
 
-/* --- "Poppy" Button Styling --- */
-.btn-primary {
-    background-color: #007aff; /* Apple's vibrant blue */
-    border-color: #007aff;
-    font-weight: 500;
-    transition: all 0.2s ease-in-out; /* Smooth transition for hover */
-}
-
-.btn-primary:hover {
-    background-color: #0056b3;
-    border-color: #0056b3;
-    transform: translateY(-2px); /* Slight lift on hover */
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-}
-
-/* --- Making Dropdowns More Interactive --- */
-/* (Bootstrap already makes them work, we are just adding a smooth fade) */
-.dropdown-menu {
-    transition: all 0.3s ease;
-}
 /* --- Data Ticker Styling --- */
-/* static/css/custom.css */
-
-/* --- UPDATED Data Ticker Styling --- */
 @keyframes ticker-scroll {
     0% { transform: translateX(0); }
-    100% { transform: translateX(-50%); } /* Animate to -50% because we duplicated the content */
+    100% { transform: translateX(-50%); }
 }
 
 .ticker-wrap {
@@ -76,7 +67,6 @@ body {
 .ticker {
     display: inline-block;
     white-space: nowrap;
-    /* Adjust animation duration for speed. More items = longer duration */
     animation: ticker-scroll 60s linear infinite; 
 }
 
@@ -87,56 +77,10 @@ body {
 .ticker__item {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    font-size: 1.1rem; /* Slightly smaller font */
+    font-size: 1.1rem;
     color: #495057;
     background-color: #f8f9fa;
     border: 1px solid #dee2e6;
-    border-radius: 50px; /* Pill shape */
+    border-radius: 50px;
     margin: 0 0.75rem;
-}
-
-.ticker-wrap {
-    width: 100%;
-    overflow: hidden;
-    background-color: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-    border-bottom: 1px solid #dee2e6;
-    padding: 1rem 0;
-}
-
-.ticker {
-    display: inline-block;
-    white-space: nowrap;
-    animation: ticker-scroll 40s linear infinite;
-}
-
-.ticker__item {
-    display: inline-block;
-    padding: 0 2rem;
-    font-size: 1.2rem;
-    color: #555;
-}
-.ticker:hover {
-    animation-play-state: paused; /* Pause animation on hover */
-}
-
-html, body {
-    height: 100%;
-}
-
-body {
-    display: flex;
-    flex-direction: column;
-}
-
-.container {
-    flex: 1 0 auto;
-}
-
-
-.hero-section {
-    background-color: #f8f9fa; /* A very light grey for separation */
-    padding: 6rem 2rem;
-    border-radius: 1rem;
-    margin-top: 2rem;
 }

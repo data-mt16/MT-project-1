@@ -1,46 +1,40 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="hero-section"> <div class="text-center">
+  <div class="hero-section">
+    <div class="text-center">
       <h1 class="display-3 fw-bold">Welcome to the Car Dealership App</h1>
       <p class="lead text-muted">Your one-stop solution for managing vehicle sales and data.</p>
-      </div>
-  </div>
-  <div class="text-center">
-    <h1 class="display-4">Welcome to the Car Dealership App</h1>
-    <p class="lead">Your one-stop solution for managing vehicle sales and data.</p>
-    <hr class="my-4">
-    
-    {% if user.is_authenticated %}
-      <p>You are logged in. You can now access the reports and data.</p>
-      <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
-    {% else %}
-      <p>Please log in or sign up to access the dashboard and reports.</p>
-      <a href="{% url 'login' %}" class="btn btn-success btn-lg me-2">Login</a>
-      <a href="{% url 'signup' %}" class="btn btn-info btn-lg">Sign Up</a>
-    {% endif %}
+      <hr class="my-4">
+      
+      {% if user.is_authenticated %}
+        <p>You are logged in. You can now access the reports and data.</p>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary btn-lg">Go to Dashboard</a>
+      {% else %}
+        <p>Please log in or sign up to access the dashboard and reports.</p>
+        <a href="{% url 'login' %}" class="btn btn-success btn-lg me-2">Login</a>
+        <a href="{% url 'signup' %}" class="btn btn-info btn-lg">Sign Up</a>
+      {% endif %}
+    </div>
   </div>
 
   <div class="ticker-wrap mt-5">
     <div id="data-ticker" class="ticker">
         <div class="ticker__item placeholder-item">Loading live data...</div>
         <div class="ticker__item placeholder-item">Connecting to the dealership network...</div>
-        <div class="ticker__item placeholder-item">Fetching latest sales...</div>
     </div>
-</div>
+  </div>
 {% endblock %}
 
 
 {% block scripts %}
 <script>
-    // --- JavaScript for the Data Ticker ---
     const ticker = document.getElementById('data-ticker');
 
     async function populateTicker() {
         try {
             const response = await fetch('/api/reports/data-snapshot/');
             const data = await response.json();
-
             let tickerItems = '';
 
             data.customers.forEach(c => {
@@ -52,13 +46,10 @@
             data.orders.forEach(o => {
                 tickerItems += `<div class="ticker__item">🧾 Recent Order: #${o.id} for ₹${o.price}</div>`;
             });
-
-            // THE FIX: We duplicate the content to create a seamless, infinite loop!
-            ticker.innerHTML = tickerItems + tickerItems;
-
+            
+            ticker.innerHTML = tickerItems + tickerItems; // Duplicate for seamless loop
         } catch (error) {
             console.error("Could not load ticker data:", error);
-            // If API fails, the placeholder content will remain.
         }
     }
     document.addEventListener('DOMContentLoaded', populateTicker);
