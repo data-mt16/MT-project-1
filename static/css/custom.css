@@ -4,10 +4,36 @@ body {
     font-family: 'Inter', sans-serif;
 }
 
-/* --- Navbar Styling --- */
 .navbar.bg-dark {
-    background-color: #222 !important; /* A sleeker, darker grey */
-    padding: 0.8rem 1rem;
+    background: linear-gradient(90deg, #333, #444) !important;
+    border-bottom: 3px solid #007aff; /* A poppy blue accent line */
+}
+
+/* --- New "Interesting" Button Colors --- */
+/* Overriding the default green login button */
+.btn-success {
+    background-color: #34c759;
+    border-color: #34c759;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+.btn-success:hover {
+    background-color: #2ca549;
+    border-color: #2ca549;
+    transform: scale(1.05); /* Make it pop on hover */
+}
+
+/* Overriding the default blue signup button */
+.btn-info {
+    background-color: #007aff;
+    border-color: #007aff;
+    font-weight: 500;
+    transition: all 0.2s ease-in-out;
+}
+.btn-info:hover {
+    background-color: #0056b3;
+    border-color: #0056b3;
+    transform: scale(1.05);
 }
 
 /* --- "Poppy" Button Styling --- */
